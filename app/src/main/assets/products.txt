@@ -1,0 +1,11 @@
+PrId	PrN	UnM	Price	Cat
+int	text	text	double	int
+1	Lapte	litru	4	1
+2	unt	kg	2	1
+3	unt	pachete	3	1
+4	carneoi	pack	6	2
+5	carnevi	kg	6	2
+6	carnevi	pack	8	2
+7	bere	sticle	7	3
+8	bere	litru	9	3
+9	Dorna	sticle	5	3
