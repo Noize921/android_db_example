@@ -60,30 +60,25 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         BARENTRY = new ArrayList<>();
         BarEntryLabels = new ArrayList<String>();
 
-        addValuesToBARENTRY(sales);
-        addValuesToBarEntryLabels(sales);
-
-        Bardataset = new BarDataSet(BARENTRY, "Sales");
-        BARDATA = new BarData(BarEntryLabels, Bardataset);
-        Bardataset.setColors(ColorTemplate.COLORFUL_COLORS);
-        chart.setData(BARDATA);
-        chart.animateY(1500);
-
         db.close();
     }
 
     public void addValuesToBARENTRY(SparseArray<String> sales){
+        BARENTRY.clear();
 
         for (int i = 0; i < sales.size(); i++) {
             BARENTRY.add(new BarEntry(sales.keyAt(i), i));
         }
+
     }
 
     public void addValuesToBarEntryLabels(SparseArray<String> sales){
+        BarEntryLabels.clear();
 
         for (int i = 0; i < sales.size(); i++) {
             BarEntryLabels.add(sales.valueAt(i));
         }
+
     }
 
     public String capitalize(String name) {
@@ -107,19 +102,32 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         List<Products> productsList = db.getAllProducts();
         String item = parent.getItemAtPosition(position).toString();
         String productName = item.split(" ")[0];
+
         Products product;
 
-        if ((product = containProduct(productsList, item)) != null) {
+        if ((product = containProduct(productsList, productName)) != null) {
             SparseArray<String> productSales = db.calcProductSale(product.getId());
             Log.d(LOG_TAG, productSales.toString());
 
             addValuesToBARENTRY(productSales);
             addValuesToBarEntryLabels(productSales);
+
+            Bardataset = new BarDataSet(BARENTRY, "Sales");
+            BARDATA = new BarData(BarEntryLabels, Bardataset);
+            Bardataset.setColors(ColorTemplate.COLORFUL_COLORS);
+            chart.setData(BARDATA);
+            chart.animateY(1500);
         } else {
             SparseArray<String> sales = db.calcAllSales();
-            Log.d(LOG_TAG, sales.toString());
+
             addValuesToBARENTRY(sales);
             addValuesToBarEntryLabels(sales);
+
+            Bardataset = new BarDataSet(BARENTRY, "Sales");
+            BARDATA = new BarData(BarEntryLabels, Bardataset);
+            Bardataset.setColors(ColorTemplate.COLORFUL_COLORS);
+            chart.setData(BARDATA);
+            chart.animateY(1500);
         }
 
         Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
